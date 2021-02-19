@@ -43,8 +43,10 @@ type Stock struct {
 	MarketCapX string `json:"marketCap"`                   // j1: market cap (fallback when real time is N/A).
 	Currency   string `json:"currency"`                    // String code for currency of stock.
 	Advancing  bool   // True when change is >= $0.
-	PreOpen    string `json:"preMarketChangePercent,omitempty"`
-	AfterHours string `json:"postMarketChangePercent,omitempty"`
+	PreOpen    string `json:"preMarketPrice,omitempty"`
+	PreOpenPct string `json:"preMarketChangePercent,omitempty"`
+	AfterHours string `json:"postMarketPrice,omitempty"`
+	AfterHoursPct string `json:"postMarketChangePercent,omitempty"`
 }
 
 // Quotes stores relevant pointers as well as the array of stock quotes for
@@ -177,8 +179,10 @@ func (quotes *Quotes) parse2(body []byte) (*Quotes, error) {
 		// TODO calculate rt?
 		quotes.stocks[i].MarketCapX = result["marketCap"]
 		quotes.stocks[i].Currency = result["currency"]
-		quotes.stocks[i].PreOpen = result["preMarketChangePercent"]
-		quotes.stocks[i].AfterHours = result["postMarketChangePercent"]
+		quotes.stocks[i].PreOpen = result["preMarketPrice"]
+		quotes.stocks[i].PreOpenPct = result["preMarketChangePercent"]
+		quotes.stocks[i].AfterHours = result["postMarketPrice"]
+		quotes.stocks[i].AfterHoursPct = result["postMarketChangePercent"]
 		/*
 			fmt.Println(i)
 			fmt.Println("-------------------")

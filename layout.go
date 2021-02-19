@@ -46,23 +46,25 @@ type Layout struct {
 func NewLayout() *Layout {
 	layout := &Layout{}
 	layout.columns = []Column{
-		{-10, `Ticker`, `Ticker`, nil},
+		{-8, `Ticker`, `Ticker`, nil},
+		{10, `PreOpen`, `PreMkt`, currency},
+		{12, `PreOpenPct`, `PreMktChg%`, last},
 		{10, `LastTrade`, `Last`, currency},
 		{10, `Change`, `Change`, currency},
 		{10, `ChangePct`, `Change%`, last},
 		{10, `Open`, `Open`, currency},
 		{10, `Low`, `Low`, currency},
 		{10, `High`, `High`, currency},
+		{10, `AfterHours`, `AftMkt`, currency},
+		{12, `AfterHoursPct`, `AftMktChg%`, last},
 		{10, `Low52`, `52w Low`, currency},
 		{10, `High52`, `52w High`, currency},
 		{11, `Volume`, `Volume`, integer},
 		{11, `AvgVolume`, `AvgVolume`, integer},
-		{9, `PeRatio`, `P/E`, blank},
-		{9, `Dividend`, `Dividend`, zero},
-		{9, `Yield`, `Yield`, percent},
+		//{9, `PeRatio`, `P/E`, blank},
+		//{9, `Dividend`, `Dividend`, zero},
+		//{9, `Yield`, `Yield`, percent},
 		{11, `MarketCap`, `MktCap`, currency},
-		{13, `PreOpen`, `PreMktChg%`, percent},
-		{13, `AfterHours`, `AfterMktChg%`, percent},
 	}
 	layout.regex = regexp.MustCompile(`(\.\d+)[TBMK]?$`)
 	layout.marketTemplate = buildMarketTemplate()
@@ -218,7 +220,7 @@ func buildQuotesTemplate() *template.Template {
 
 
 {{.Header}}
-{{range.Stocks}}{{if .Advancing}}<green>{{end}}{{.Ticker}}{{.LastTrade}}{{.Change}}{{.ChangePct}}{{.Open}}{{.Low}}{{.High}}{{.Low52}}{{.High52}}{{.Volume}}{{.AvgVolume}}{{.PeRatio}}{{.Dividend}}{{.Yield}}{{.MarketCap}}{{.PreOpen}}{{.AfterHours}}</>
+{{range.Stocks}}{{if .Advancing}}<green>{{end}}{{.Ticker}}{{.PreOpen}}{{.PreOpenPct}}{{.LastTrade}}{{.Change}}{{.ChangePct}}{{.Open}}{{.Low}}{{.High}}{{.AfterHours}}{{.AfterHoursPct}}{{.Low52}}{{.High52}}{{.Volume}}{{.AvgVolume}}{{.PeRatio}}{{.Dividend}}{{.Yield}}{{.MarketCap}}</>
 {{end}}`
 
 	return template.Must(template.New(`quotes`).Parse(markup))
